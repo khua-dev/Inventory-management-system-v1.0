@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  #product-form {
+    margin-bottom: 20px;
+  }
+  
+  #product-list {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .product-item {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .product-item button {
+    margin-left: 10px;
+  }
+  

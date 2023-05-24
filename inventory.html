@@ -1,0 +1,240 @@
+<!-- inventory.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inventory Management System</title>
+  <style>
+    .navbar {
+      background-color: #333;
+      display: flex;
+      flex-direction: column;
+      width: 15%;
+      height: 100vh;
+    }
+
+    .navbar a {
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+      margin-top: 10%;
+      padding: 20px;
+    }
+
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    .container{
+      display: flex;
+    }
+    .bodycontent{
+      margin-left: 20px;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .logout{
+      margin-top: 100%;
+      padding: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="navbar">
+    <a href="index.html">Add Item</a>
+    <a href="inventory.html">View Inventory</a>
+    <a href="users.html">Users</a>
+    <a href="distributed.html">Distributed</a>
+    <button class="logout">logout</button>
+    </div>
+
+    <div class="bodycontent">
+       <label for="searchItem">Search Item:</label>
+  <input type="text" id="searchItem" onkeyup="searchInventory()">
+
+  <p id="itemCount"></p>
+
+  <table id="inventoryTable">
+    <thead>
+      <tr>
+        <th>Item Name</th>
+        <th>Serial Number</th>
+        <th>Model</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="inventoryBody"></tbody>
+  </table>
+
+  <div id="distributionFormContainer" style="display: none;">
+    <h3>Distribution Form</h3>
+    <form id="distributionForm">
+      <label for="userName">User Name:</label>
+      <input type="text" id="userName" required><br>
+
+      <label for="designation">Designation:</label>
+      <input type="text" id="designation" required><br>
+
+      <label for="block">Block:</label>
+      <input type="text" id="block" required><br>
+
+      <label for="roomNumber">Room Number:</label>
+      <input type="text" id="roomNumber" required><br>
+
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+
+    </div>
+
+ 
+  </div>
+  
+  <script>
+    var items = JSON.parse(localStorage.getItem('items')) || [];
+    var inventoryBody = document.getElementById('inventoryBody');
+    inventoryBody.innerHTML = '';
+
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var row = document.createElement('tr');
+      var itemNameCell = document.createElement('td');
+      itemNameCell.textContent = item.name;
+      var itemSerialCell = document.createElement('td');
+      itemSerialCell.textContent = item.serial;
+      var itemModelCell = document.createElement('td');
+      itemModelCell.textContent = item.model;
+      var itemDateCell = document.createElement('td');
+      itemDateCell.textContent = item.date;
+      var actionCell = document.createElement('td');
+      var distributeButton = document.createElement('button');
+      distributeButton.textContent = 'Distribute';
+      distributeButton.setAttribute('data-index', i);
+      distributeButton.addEventListener('click', showDistributionForm);
+      actionCell.appendChild(distributeButton);
+      row.appendChild(itemNameCell);
+      row.appendChild(itemSerialCell);
+      row.appendChild(itemModelCell);
+      row.appendChild(itemDateCell);
+      row.appendChild(actionCell);
+      inventoryBody.appendChild(row);
+    }
+
+    function showDistributionForm(event) {
+      var index = event.target.getAttribute('data-index');
+      var item = items[index];
+
+      document.getElementById('userName').value = '';
+      document.getElementById('designation').value = '';
+      document.getElementById('block').value = '';
+      document.getElementById('roomNumber').value = '';
+
+      var distributionFormContainer = document.getElementById('distributionFormContainer');
+      distributionFormContainer.style.display = 'block';
+
+      var distributionForm = document.getElementById('distributionForm');
+      distributionForm.onsubmit = function(e) {
+        e.preventDefault();
+
+        var userName = document.getElementById('userName').value;
+        var designation = document.getElementById('designation').value;
+        var block = document.getElementById('block').value;
+        var roomNumber = document.getElementById('roomNumber').value;
+
+        var distributedItem = {
+          item: item,
+          user: {
+            name: userName,
+            designation: designation,
+            block: block,
+            roomNumber: roomNumber
+          }
+        };
+
+        var distributedItems = JSON.parse(localStorage.getItem('distributedItems')) || [];
+        distributedItems.push(distributedItem);
+        localStorage.setItem('distributedItems', JSON.stringify(distributedItems));
+
+        items.splice(index, 1);
+        localStorage.setItem('items', JSON.stringify(items));
+
+        distributionFormContainer.style.display = 'none';
+
+        alert('Item distributed successfully!');
+        showInventory();
+      };
+    }
+
+    function showInventory() {
+      inventoryBody.innerHTML = '';
+
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        var row = document.createElement('tr');
+        var itemNameCell = document.createElement('td');
+        itemNameCell.textContent = item.name;
+        var itemSerialCell = document.createElement('td');
+        itemSerialCell.textContent = item.serial;
+        var itemModelCell = document.createElement('td');
+        itemModelCell.textContent = item.model;
+        var itemDateCell = document.createElement('td');
+        itemDateCell.textContent = item.date;
+        var actionCell = document.createElement('td');
+        var distributeButton = document.createElement('button');
+        distributeButton.textContent = 'Distribute';
+        distributeButton.setAttribute('data-index', i);
+        distributeButton.addEventListener('click', showDistributionForm);
+        actionCell.appendChild(distributeButton);
+        row.appendChild(itemNameCell);
+        row.appendChild(itemSerialCell);
+        row.appendChild(itemModelCell);
+        row.appendChild(itemDateCell);
+        row.appendChild(actionCell);
+        inventoryBody.appendChild(row);
+      }
+    }
+
+    function searchInventory() {
+      var searchInput = document.getElementById('searchItem').value.toLowerCase();
+      var matchingItems = items.filter(function(item) {
+        return item.name.toLowerCase().includes(searchInput);
+      });
+
+      var itemCount = document.getElementById('itemCount');
+      itemCount.textContent = 'Total items with name "' + searchInput + '": ' + matchingItems.length;
+
+      inventoryBody.innerHTML = '';
+
+      for (var i = 0; i < matchingItems.length; i++) {
+        var item = matchingItems[i];
+        var row = document.createElement('tr');
+        var itemNameCell = document.createElement('td');
+        itemNameCell.textContent = item.name;
+        var itemSerialCell = document.createElement('td');
+        itemSerialCell.textContent = item.serial;
+        var itemModelCell = document.createElement('td');
+        itemModelCell.textContent = item.model;
+        var itemDateCell = document.createElement('td');
+        itemDateCell.textContent = item.date;
+        var actionCell = document.createElement('td');
+        var distributeButton = document.createElement('button');
+        distributeButton.textContent = 'Distribute';
+        distributeButton.setAttribute('data-index', i);
+        distributeButton.addEventListener('click', showDistributionForm);
+        actionCell.appendChild(distributeButton);
+        row.appendChild(itemNameCell);
+        row.appendChild(itemSerialCell);
+        row.appendChild(itemModelCell);
+        row.appendChild(itemDateCell);
+        row.appendChild(actionCell);
+        inventoryBody.appendChild(row);
+      }
+    }
+  </script>
+</body>
+</html>

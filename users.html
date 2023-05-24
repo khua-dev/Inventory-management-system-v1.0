@@ -1,0 +1,128 @@
+<!-- users.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inventory Management System - Users</title>
+  <style>
+    .navbar {
+      background-color: #333;
+      display: flex;
+      flex-direction: column;
+      width: 15%;
+      height: 100vh;
+    }
+
+    .navbar a {
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+      margin-top: 10%;
+      padding: 20px;
+    }
+
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    .container{
+      display: flex;
+    }
+    .bodycontent{
+      margin-left: 20px;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .logout{
+      margin-top: 100%;
+      padding: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="navbar">
+    <a href="index.html">Add Item</a>
+    <a href="inventory.html">View Inventory</a>
+    <a href="users.html">Users</a>
+    <a href="distributed.html">Distributed</a>
+    <button class="logout">logout</button>
+    </div>
+  
+<div class="bodycontent">
+  <label for="searchUser">Search User:</label>
+  <input type="text" id="searchUser" onkeyup="searchUsers()">
+
+  <h2>Users</h2>
+  <p>Total Users: <span id="totalUsers"></span></p>
+
+  <ul id="userList"></ul>
+</div>
+  
+  </div>
+  
+
+  <script>
+    var distributedItems = JSON.parse(localStorage.getItem('distributedItems')) || [];
+    var userList = document.getElementById('userList');
+
+    function getUniqueUsers() {
+      var uniqueUsers = [];
+      var userMap = new Map();
+
+      for (var i = 0; i < distributedItems.length; i++) {
+        var user = distributedItems[i].user;
+        if (!userMap.has(user.name.toLowerCase())) {
+          userMap.set(user.name.toLowerCase(), user);
+          uniqueUsers.push(user);
+        }
+      }
+
+      return uniqueUsers;
+    }
+
+    function displayUsers(users) {
+      userList.innerHTML = '';
+
+      for (var i = 0; i < users.length; i++) {
+        var user = users[i];
+        var listItem = document.createElement('li');
+        var userLink = document.createElement('a');
+        userLink.textContent = user.name;
+        userLink.setAttribute('data-index', i);
+        userLink.addEventListener('click', showDistributedItems);
+        listItem.appendChild(userLink);
+        userList.appendChild(listItem);
+      }
+      totalUsers.textContent = users.length;
+    }
+
+    function showDistributedItems(event) {
+      var index = event.target.getAttribute('data-index');
+      var user = distributedItems[index].user;
+      var matchingItems = distributedItems.filter(function(distributedItem) {
+        return distributedItem.user.name.toLowerCase() === user.name.toLowerCase();
+      });
+      var items = matchingItems.map(function(distributedItem) {
+        return distributedItem.item;
+      });
+
+      alert('User: ' + user.name + '\nDesignation: ' + user.designation + '\nBlock: ' + user.block + '\nRoom Number: ' + user.roomNumber + '\n\nItems:\n' + JSON.stringify(items, null, 2));
+    }
+
+    function searchUsers() {
+      var searchInput = document.getElementById('searchUser').value.toLowerCase();
+      var matchingUsers = getUniqueUsers().filter(function(user) {
+        return user.name.toLowerCase().includes(searchInput);
+      });
+
+      displayUsers(matchingUsers);
+    }
+
+    displayUsers(getUniqueUsers());
+  </script>
+</body>
+</html>
