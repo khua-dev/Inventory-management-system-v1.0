@@ -2,45 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="style.css">
   <title>Inventory Management System</title>
-  <style>
-    .navbar {
-      background-color: #333;
-      display: flex;
-      flex-direction: column;
-      width: 15%;
-      height: 100vh;
-    }
-
-    .navbar a {
-      color: #f2f2f2;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-size: 17px;
-      margin-top: 10%;
-      padding: 20px;
-    }
-
-    .navbar a:hover {
-      background-color: #ddd;
-      color: black;
-    }
-    .container{
-      display: flex;
-    }
-    .bodycontent{
-      margin-left: 20px;
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .logout{
-      margin-top: 100%;
-      padding: 15px;
-    }
-  </style>
+ 
 </head>
 <body>
   <div class="container">
@@ -53,6 +17,7 @@
     </div>
 
     <div class="bodycontent">
+      <h1>MY INVENTORY</h1>
        <label for="searchItem">Search Item:</label>
   <input type="text" id="searchItem" onkeyup="searchInventory()">
 
@@ -170,34 +135,54 @@
       };
     }
 
-    function showInventory() {
-      inventoryBody.innerHTML = '';
+    function displayInventory(items) {
+  inventoryBody.innerHTML = '';
 
-      for (var i = 0; i < items.length; i++) {
-        var item = items[i];
-        var row = document.createElement('tr');
-        var itemNameCell = document.createElement('td');
-        itemNameCell.textContent = item.name;
-        var itemSerialCell = document.createElement('td');
-        itemSerialCell.textContent = item.serial;
-        var itemModelCell = document.createElement('td');
-        itemModelCell.textContent = item.model;
-        var itemDateCell = document.createElement('td');
-        itemDateCell.textContent = item.date;
-        var actionCell = document.createElement('td');
-        var distributeButton = document.createElement('button');
-        distributeButton.textContent = 'Distribute';
-        distributeButton.setAttribute('data-index', i);
-        distributeButton.addEventListener('click', showDistributionForm);
-        actionCell.appendChild(distributeButton);
-        row.appendChild(itemNameCell);
-        row.appendChild(itemSerialCell);
-        row.appendChild(itemModelCell);
-        row.appendChild(itemDateCell);
-        row.appendChild(actionCell);
-        inventoryBody.appendChild(row);
-      }
-    }
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    var row = document.createElement('tr');
+    var itemNameCell = document.createElement('td');
+    itemNameCell.textContent = item.name;
+    var itemSerialCell = document.createElement('td');
+    itemSerialCell.textContent = item.serial;
+    var itemModelCell = document.createElement('td');
+    itemModelCell.textContent = item.model;
+    var itemDateCell = document.createElement('td');
+    itemDateCell.textContent = item.date;
+    var actionCell = document.createElement('td');
+
+    var editButton = document.createElement('button');
+    editButton.textContent = 'Edit';
+    editButton.setAttribute('data-index', i);
+    editButton.addEventListener('click', editItem);
+    actionCell.appendChild(editButton);
+
+    var deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.setAttribute('data-index', i);
+    deleteButton.addEventListener('click', deleteItem);
+    actionCell.appendChild(deleteButton);
+
+    row.appendChild(itemNameCell);
+    row.appendChild(itemSerialCell);
+    row.appendChild(itemModelCell);
+    row.appendChild(itemDateCell);
+    row.appendChild(actionCell);
+    inventoryBody.appendChild(row);
+  }
+}
+
+function editItem(event) {
+  var index = event.target.getAttribute('data-index');
+  // Add your logic for editing an item at the specified index
+}
+
+function deleteItem(event) {
+  var index = event.target.getAttribute('data-index');
+  // Add your logic for deleting an item at the specified index
+}
+
+
 
     function searchInventory() {
       var searchInput = document.getElementById('searchItem').value.toLowerCase();
@@ -206,7 +191,7 @@
       });
 
       var itemCount = document.getElementById('itemCount');
-      itemCount.textContent = 'Total items with name "' + searchInput + '": ' + matchingItems.length;
+      itemCount.textContent = 'Total items: ' + matchingItems.length;
 
       inventoryBody.innerHTML = '';
 

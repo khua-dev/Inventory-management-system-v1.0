@@ -3,44 +3,7 @@
 <html>
 <head>
   <title>Inventory Management System - Users</title>
-  <style>
-    .navbar {
-      background-color: #333;
-      display: flex;
-      flex-direction: column;
-      width: 15%;
-      height: 100vh;
-    }
-
-    .navbar a {
-      color: #f2f2f2;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-size: 17px;
-      margin-top: 10%;
-      padding: 20px;
-    }
-
-    .navbar a:hover {
-      background-color: #ddd;
-      color: black;
-    }
-    .container{
-      display: flex;
-    }
-    .bodycontent{
-      margin-left: 20px;
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .logout{
-      margin-top: 100%;
-      padding: 15px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
@@ -53,8 +16,7 @@
     </div>
   
 <div class="bodycontent">
-  <label for="searchUser">Search User:</label>
-  <input type="text" id="searchUser" onkeyup="searchUsers()">
+  <input type="text" id="searchUser" placeholder="SEARCH FOR USER..." onkeyup="searchUsers()">
 
   <h2>Users</h2>
   <p>Total Users: <span id="totalUsers"></span></p>
@@ -85,20 +47,53 @@
     }
 
     function displayUsers(users) {
-      userList.innerHTML = '';
+  userList.innerHTML = '';
 
-      for (var i = 0; i < users.length; i++) {
-        var user = users[i];
-        var listItem = document.createElement('li');
-        var userLink = document.createElement('a');
-        userLink.textContent = user.name;
-        userLink.setAttribute('data-index', i);
-        userLink.addEventListener('click', showDistributedItems);
-        listItem.appendChild(userLink);
-        userList.appendChild(listItem);
-      }
-      totalUsers.textContent = users.length;
-    }
+  var table = document.createElement('table');
+  var tableHeader = document.createElement('tr');
+  var headerName = document.createElement('th');
+  headerName.textContent = 'Name';
+  var headerDesignation = document.createElement('th');
+  headerDesignation.textContent = 'Designation';
+  var headerBlock = document.createElement('th');
+  headerBlock.textContent = 'Block';
+  var headerRoomNumber = document.createElement('th');
+  headerRoomNumber.textContent = 'Room Number';
+
+  tableHeader.appendChild(headerName);
+  tableHeader.appendChild(headerDesignation);
+  tableHeader.appendChild(headerBlock);
+  tableHeader.appendChild(headerRoomNumber);
+  table.appendChild(tableHeader);
+
+  for (var i = 0; i < users.length; i++) {
+    var user = users[i];
+    var tableRow = document.createElement('tr');
+    var cellName = document.createElement('td');
+    cellName.textContent = user.name;
+    cellName.style.margin = '20px';
+    var cellDesignation = document.createElement('td');
+    cellDesignation.textContent = user.designation;
+    cellDesignation.style.margin = '20px';
+    var cellBlock = document.createElement('td');
+    cellBlock.textContent = user.block;
+    cellBlock.style.margin = '20px';
+    var cellRoomNumber = document.createElement('td');
+    cellRoomNumber.textContent = user.roomNumber;
+    cellRoomNumber.style.margin = '20px';
+
+    tableRow.appendChild(cellName);
+    tableRow.appendChild(cellDesignation);
+    tableRow.appendChild(cellBlock);
+    tableRow.appendChild(cellRoomNumber);
+    table.appendChild(tableRow);
+  }
+
+  userList.appendChild(table);
+  totalUsers.textContent = users.length;
+}
+
+
 
     function showDistributedItems(event) {
       var index = event.target.getAttribute('data-index');

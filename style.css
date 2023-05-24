@@ -1,27 +1,75 @@
-body {
-    font-family: Arial, sans-serif;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  #product-form {
-    margin-bottom: 20px;
-  }
-  
-  #product-list {
-    border: 1px solid #ccc;
-    padding: 10px;
-  }
-  
-  .product-item {
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    padding: 10px;
-  }
-  
-  .product-item button {
-    margin-left: 10px;
-  }
-  
+@import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@600&family=Delicious+Handrawn&family=Montserrat:wght@500&family=Playfair+Display:ital,wght@1,900&display=swap');
+body{
+font-family: 'Montserrat', sans-serif;
+}
+
+.navbar {
+  background-color: #333;
+  display: flex;
+  flex-direction: column;
+  width: 15%;
+  height: 100vh;
+}
+
+.navbar a {
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  margin-top: 10%;
+  padding: 20px;
+}
+
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+.container{
+  display: flex;
+}
+.bodycontent{
+  margin-left: 20px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.logout{
+  margin-top: 100%;
+  padding: 15px;
+}
+#searchUser{
+  padding: 10px;
+}
+#searchItem{
+  padding: 10px;
+}
+#itemForm{
+  display: flex;
+  flex-direction: column;
+}
+#itemForm input{
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+}
+.additembody{
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: solid;
+  border-color: rgb(131, 131, 131);
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-top: 10%;
+  padding-bottom: 10%;
+  height: 100%;
+}
+table {
+  border-collapse: separate;
+  border-spacing: 10px;
+}

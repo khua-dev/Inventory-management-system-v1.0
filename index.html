@@ -3,44 +3,7 @@
 <html>
 <head>
   <title>Inventory Management System</title>
-  <style>
-      .navbar {
-      background-color: #333;
-      display: flex;
-      flex-direction: column;
-      width: 15%;
-      height: 100vh;
-    }
-
-    .navbar a {
-      color: #f2f2f2;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-size: 17px;
-      margin-top: 10%;
-      padding: 20px;
-    }
-
-    .navbar a:hover {
-      background-color: #ddd;
-      color: black;
-    }
-    .container{
-      display: flex;
-    }
-    .bodycontent{
-      margin-left: 20px;
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .logout{
-      margin-top: 100%;
-      padding: 15px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
@@ -52,8 +15,9 @@
     <button class="logout">logout</button>
     </div>
 
-    <div class="bodycontent">
+    <div class="bodycontent additembody">
         <form id="itemForm">
+          <h1>Add an item to the inventory</h1>
     <label for="itemName">Item Name:</label>
     <input type="text" id="itemName" required><br>
 
